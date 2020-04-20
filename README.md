@@ -22,3 +22,25 @@ LIMIT_UUID_LENGTH_32=true
  ```
 
 # Usage Example
+
+### 1. Create new website 
+```
+use Hyn\Tenancy\Models\Website;
+use Hyn\Tenancy\Contracts\Repositories\WebsiteRepository;
+
+$website = new Website;
+$website->uuid = Str::random(10);
+app(WebsiteRepository::class)->create($website);
+ ```
+
+### 2. Create And Connect Hostname
+```
+use Hyn\Tenancy\Models\Hostname;
+use Hyn\Tenancy\Contracts\Repositories\HostnameRepository;
+
+$hostname = new Hostname;
+$hostname->fqdn = 'site.mydomain.com';
+$hostname = app(HostnameRepository::class)->create($hostname);
+app(HostnameRepository::class)->attach($hostname, $website);
+dd($website->hostnames); // Collection with $hostname
+ ```
